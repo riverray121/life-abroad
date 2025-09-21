@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 function PostView({ post }) {
   const handleViewAllPosts = () => {
@@ -8,36 +8,22 @@ function PostView({ post }) {
     window.location.search = urlParams.toString();
   };
 
-  // Cleanup blob URLs when component unmounts to prevent memory leaks
-  useEffect(() => {
-    return () => {
-      if (post?.media_items) {
-        post.media_items.forEach(media => {
-          if (media.url && media.url.startsWith('blob:')) {
-            URL.revokeObjectURL(media.url);
-          }
-        });
-      }
-    };
-  }, [post?.media_items]);
-
   return (
     <div className="post-view">
       <div className="post-header">
-        <div className="post-header-content">
-          <h2>Post by {post.creator_name}</h2>
-          <p className="post-date">{new Date(post.created_at).toLocaleDateString()}</p>
-        </div>
         <button 
           className="view-all-button"
           onClick={handleViewAllPosts}
         >
-          View All My Posts
+          view all {post.creator_name}'s posts
         </button>
       </div>
       
       <div className="post-content">
-        <p className="post-description">{post.description}</p>
+        <div className="post-info">
+          <p className="post-description">{post.description}</p>
+          <p className="post-date">{new Date(post.created_at).toLocaleDateString()}</p>
+        </div>
         
         {post.media_items && post.media_items.length > 0 && (
           <div className="media-gallery">
@@ -87,7 +73,6 @@ function PostView({ post }) {
                         Failed to load {media.type}
                       </div>
                     )}
-                    <p className="media-debug">Type: {media.type}, ID: {media.id}</p>
                   </div>
                 );
               })}

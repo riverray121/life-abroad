@@ -102,4 +102,7 @@ class ViewService:
                 # Skip posts that can't be loaded
                 continue
         
+        # Sort posts by created_at in descending order (most recent first)
+        accessible_posts.sort(key=lambda post: post["created_at"], reverse=True)
+        
         return accessible_posts

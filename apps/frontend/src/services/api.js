@@ -24,15 +24,22 @@ class ApiService {
 
     const data = await response.json();
     
-    // Process the response to fetch actual media URLs
+    // Add direct URLs to media items
     if (data.post_id) {
-      // Single post - process media items
-      data.media_items = await this.processMediaItems(data.media_items);
+      // Single post - add URLs to media items
+      data.media_items = data.media_items?.map(item => ({
+        ...item,
+        url: `${API_BASE_URL}/media-items/${item.id}/stream`
+      })) || [];
     } else if (data.posts) {
-      // Multiple posts - process media items for each post
-      for (const post of data.posts) {
-        post.media_items = await this.processMediaItems(post.media_items);
-      }
+      // Multiple posts - add URLs to media items for each post
+      data.posts = data.posts.map(post => ({
+        ...post,
+        media_items: post.media_items?.map(item => ({
+          ...item,
+          url: `${API_BASE_URL}/media-items/${item.id}/stream`
+        })) || []
+      }));
     }
     
     return data;

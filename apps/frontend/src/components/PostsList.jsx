@@ -19,8 +19,7 @@ function PostsList({ posts }) {
 
   return (
     <div className="posts-list">
-      <h2>Your Shared Memories</h2>
-      <p className="posts-count">{posts.length} post{posts.length !== 1 ? 's' : ''} shared with you</p>
+      <p className="posts-summary">{posts.length} posts shared from {posts[0]?.creator_name}</p>
       
       <div className="posts-grid">
         {posts.map((post) => (
@@ -30,59 +29,55 @@ function PostsList({ posts }) {
             onClick={() => handlePostClick(post.post_id)}
             style={{ cursor: 'pointer' }}
           >
-            <div className="post-card-header">
-              <h3>From {post.creator_name}</h3>
-              <p className="post-card-date">{new Date(post.created_at).toLocaleDateString()}</p>
-            </div>
+            {post.media_items && post.media_items.length > 0 && (
+              <div className="post-card-media">
+                <div className="media-preview">
+                  {post.media_items.slice(0, 1).map((media) => (
+                    <div key={media.id} className="media-thumbnail">
+                      {media.url ? (
+                        media.type === 'image' || media.type === 'photo' ? (
+                          <img 
+                            src={media.url} 
+                            alt="Preview"
+                            className="thumbnail-image"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.nextSibling.style.display = 'block';
+                            }}
+                          />
+                        ) : media.type === 'video' ? (
+                          <div className="thumbnail-video">
+                            Video
+                          </div>
+                        ) : (
+                          <div className="thumbnail-file">
+                            File
+                          </div>
+                        )
+                      ) : (
+                        <div className="thumbnail-error">
+                          Error
+                        </div>
+                      )}
+                      {media.url && (
+                        <div className="thumbnail-error" style={{display: 'none'}}>
+                          Error
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {post.media_items.length > 1 && (
+                    <div className="media-count">
+                      +{post.media_items.length - 1} more
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             
             <div className="post-card-content">
               <p className="post-card-description">{post.description}</p>
-              
-              {post.media_items && post.media_items.length > 0 && (
-                <div className="post-card-media">
-                  <div className="media-preview">
-                    {post.media_items.slice(0, 2).map((media) => (
-                      <div key={media.id} className="media-thumbnail">
-                        {media.url ? (
-                          media.type === 'image' ? (
-                            <img 
-                              src={media.url} 
-                              alt="Preview"
-                              className="thumbnail-image"
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'block';
-                              }}
-                            />
-                          ) : media.type === 'video' ? (
-                            <div className="thumbnail-video">
-                              Video
-                            </div>
-                          ) : (
-                            <div className="thumbnail-file">
-                              File
-                            </div>
-                          )
-                        ) : (
-                          <div className="thumbnail-error">
-                            Error
-                          </div>
-                        )}
-                        {media.url && (
-                          <div className="thumbnail-error" style={{display: 'none'}}>
-                            Error
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                    {post.media_items.length > 2 && (
-                      <div className="media-count">
-                        +{post.media_items.length - 2} more
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
+              <p className="post-card-date">{new Date(post.created_at).toLocaleDateString()}</p>
             </div>
           </div>
         ))}

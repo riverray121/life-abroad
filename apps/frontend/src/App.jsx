@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PostView from './components/PostView';
 import PostsList from './components/PostsList';
+import ScreenTemplate from './components/ScreenTemplate';
 import ApiService from './services/api';
 import './App.css';
 
@@ -36,39 +37,33 @@ function App() {
 
   if (loading) {
     return (
-      <div className="app">
+      <ScreenTemplate>
         <div className="loading">Loading...</div>
-      </div>
+      </ScreenTemplate>
     );
   }
 
   if (error) {
     return (
-      <div className="app">
+      <ScreenTemplate>
         <div className="error">
           <h2>Error</h2>
           <p>{error}</p>
         </div>
-      </div>
+      </ScreenTemplate>
     );
   }
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>Life Abroad</h1>
-      </header>
-      
-      <main className="app-main">
-        {data?.post_id ? (
-          <PostView post={data} />
-        ) : data?.posts ? (
-          <PostsList posts={data.posts} />
-        ) : (
-          <div className="error">No content available</div>
-        )}
-      </main>
-    </div>
+    <ScreenTemplate>
+      {data?.post_id ? (
+        <PostView post={data} />
+      ) : data?.posts ? (
+        <PostsList posts={data.posts} />
+      ) : (
+        <div className="error">No content available</div>
+      )}
+    </ScreenTemplate>
   );
 }
 

@@ -17,6 +17,12 @@ class UserRepository:
     async def get_user_by_id(self, user_id: int, session: AsyncSession) -> User | None:
         return await session.get(User, user_id)
 
+    async def update_user(self, user: User, session: AsyncSession) -> User:
+        session.add(user)
+        await session.commit()
+        await session.refresh(user)
+        return user
+
     async def delete_user(self, user_id: int, session: AsyncSession) -> bool:
         user = await session.get(User, user_id)
         if not user:

@@ -3,3 +3,8 @@ __pycache__/
 .venv/
 venv/
 .DS_Store
+
+# Environment variables
+.env
+.env.*
+!.env.example

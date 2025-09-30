@@ -4,11 +4,18 @@ setup:
 test:
 	PYTHONPATH=$$(pwd) .venv/bin/pytest -q
 
-run:
-	docker compose up --build
+dev:
+	docker compose -f docker-compose.dev.yaml up --build
+
+prod:
+	docker compose -f docker-compose.prod.yaml up --build
 
 stop: 
-	docker compose down
+	docker compose -f docker-compose.dev.yaml down
+	docker compose -f docker-compose.prod.yaml down
+
+stop-prod:
+	docker compose -f docker-compose.prod.yaml down
 
 reset:
 	docker compose down -v

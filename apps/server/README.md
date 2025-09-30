@@ -19,6 +19,6 @@
 ## Infrastructure
 
 - **Containerization**: Docker + Docker Compose
-- **Reverse Proxy / HTTPS**: Caddy
-- **Networking**: Cloudflare Tunnel or port forwarding
+- **Networking**: Cloudflare Tunnel (secure, no port forwarding needed)
+- **HTTPS**: Automatic via Cloudflare
 - **CI/CD**: GitHub Actions (tests, builds)

@@ -29,9 +29,16 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 # Add CORS middleware
+allowed_origins = [get_env_var("FRONTEND_URL")]
+# Add www variant if main domain doesn't start with www
+frontend_url = get_env_var("FRONTEND_URL")
+if not frontend_url.startswith("https://www.") and "localhost" not in frontend_url:
+    www_variant = frontend_url.replace("https://", "https://www.")
+    allowed_origins.append(www_variant)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[get_env_var("FRONTEND_URL")],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -22,3 +22,28 @@
 - **Networking**: Cloudflare Tunnel (secure, no port forwarding needed)
 - **HTTPS**: Automatic via Cloudflare
 - **CI/CD**: GitHub Actions (tests, builds)
+
+## DNS Configuration
+
+### Cloudflare DNS Setup
+
+Add these CNAME records in your Cloudflare dashboard:
+
+| Name | Target |
+|------|--------|
+| `my-life-abroad.com` | `44264acb-afd5-4dae-b928-3550da56e837.cfargotunnel.com` |
+| `www` | `44264acb-afd5-4dae-b928-3550da56e837.cfargotunnel.com` |
+| `api` | `44264acb-afd5-4dae-b928-3550da56e837.cfargotunnel.com` |
+| `files` | `44264acb-afd5-4dae-b928-3550da56e837.cfargotunnel.com` |
+
+**Steps:**
+
+1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com) → DNS → Records
+2. Add each CNAME record above with **Proxy status: Proxied**
+3. Wait 5-10 minutes for DNS propagation
+
+**Result:**
+
+- `https://my-life-abroad.com` → Frontend
+- `https://api.my-life-abroad.com` → Backend API  
+- `https://files.my-life-abroad.com` → File storage

@@ -6,12 +6,6 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
-    allowedHosts: [
-      'localhost',
-      '127.0.0.1',
-      'my-life-abroad.com',
-      'www.my-life-abroad.com',
-      '.my-life-abroad.com'
-    ]
+    allowedHosts: process.env.VITE_ALLOWED_HOSTS ? process.env.VITE_ALLOWED_HOSTS.split(',') : ['localhost', '127.0.0.1']
   },
 })
